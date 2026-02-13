@@ -1,11 +1,21 @@
 ﻿const display = document.getElementById("display");
 const historyEl = document.getElementById("history");
 const keys = document.querySelector(".keys");
+const historyList = document.getElementById("historyList");
+const clearHistoryBtn = document.getElementById("clearHistoryBtn");
 
 let current = "0";
 let previous = null;
 let operator = null;
 let overwrite = false;
+let calcHistory = [];
+
+const OPERATOR_SYMBOLS = {
+  "/": "÷",
+  "*": "×",
+  "-": "−",
+  "+": "+"
+};
 
 function formatNumber(value) {
   const number = Number(value);
@@ -17,7 +27,19 @@ function formatNumber(value) {
 
 function updateDisplay() {
   display.textContent = formatNumber(current);
-  historyEl.textContent = previous !== null && operator ? `${formatNumber(previous)} ${operator}` : "";
+  historyEl.textContent = previous !== null && operator ? `${formatNumber(previous)} ${OPERATOR_SYMBOLS[operator]}` : "";
+}
+
+function animateResult() {
+  display.classList.remove("display-pop");
+  void display.offsetWidth;
+  display.classList.add("display-pop");
+}
+
+function animateButton(button) {
+  button.classList.remove("key-press");
+  void button.offsetWidth;
+  button.classList.add("key-press");
 }
 
 function inputNumber(num) {
@@ -65,6 +87,36 @@ function toPercent() {
   current = String(Number(current) / 100);
 }
 
+function renderCalcHistory() {
+  if (!historyList) return;
+
+  historyList.innerHTML = "";
+  if (calcHistory.length === 0) {
+    const empty = document.createElement("li");
+    empty.className = "history-empty";
+    empty.textContent = "Aun no hay operaciones";
+    historyList.appendChild(empty);
+    return;
+  }
+
+  calcHistory.forEach((entry) => {
+    const li = document.createElement("li");
+    li.className = "history-item";
+    li.textContent = entry;
+    historyList.appendChild(li);
+  });
+}
+
+function addHistoryEntry(left, op, right, result) {
+  const symbol = OPERATOR_SYMBOLS[op] || op;
+  const entry = `${formatNumber(left)} ${symbol} ${formatNumber(right)} = ${formatNumber(result)}`;
+  calcHistory.unshift(entry);
+  if (calcHistory.length > 10) {
+    calcHistory = calcHistory.slice(0, 10);
+  }
+  renderCalcHistory();
+}
+
 function compute() {
   if (previous === null || operator === null) return;
 
@@ -89,6 +141,10 @@ function compute() {
       return;
   }
 
+  const usedOperator = operator;
+  const leftValue = previous;
+  const rightValue = current;
+
   current = Number.isFinite(result) ? String(result) : "0";
   previous = null;
   operator = null;
@@ -97,7 +153,11 @@ function compute() {
   if (!Number.isFinite(result)) {
     display.textContent = "Error";
     historyEl.textContent = "No se puede dividir entre 0";
+    return;
   }
+
+  addHistoryEntry(leftValue, usedOperator, rightValue, result);
+  animateResult();
 }
 
 function setOperator(nextOperator) {
@@ -112,6 +172,8 @@ function setOperator(nextOperator) {
 keys.addEventListener("click", (event) => {
   const button = event.target.closest("button");
   if (!button) return;
+
+  animateButton(button);
 
   const { action, value } = button.dataset;
 
@@ -161,4 +223,12 @@ window.addEventListener("keydown", (event) => {
   updateDisplay();
 });
 
+if (clearHistoryBtn) {
+  clearHistoryBtn.addEventListener("click", () => {
+    calcHistory = [];
+    renderCalcHistory();
+  });
+}
+
+renderCalcHistory();
 updateDisplay();

@@ -6,43 +6,60 @@
   <title>Calculadora Moderna</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <header class="brand-bar" aria-label="Marca de la calculadora">
+    <h1 class="brand-title">Calculator</h1>
+    <p class="brand-signature">by darlinggg</p>
+  </header>
+
   <main class="app">
-    <section class="calculator" aria-label="Calculadora">
-      <header class="display-wrap">
-        <p id="history" class="history" aria-live="polite"></p>
-        <h1 id="display" class="display" aria-live="polite">0</h1>
-      </header>
+    <section class="layout" aria-label="Calculadora con historial">
+      <article class="calculator" aria-label="Calculadora">
+        <header class="display-wrap">
+          <p id="history" class="history" aria-live="polite"></p>
+          <h1 id="display" class="display" aria-live="polite">0</h1>
+        </header>
 
-      <div class="keys" role="group" aria-label="Teclado de calculadora">
-        <button class="key key-fn" data-action="clear">AC</button>
-        <button class="key key-fn" data-action="delete">DEL</button>
-        <button class="key key-fn" data-action="percent">%</button>
-        <button class="key key-op" data-action="operator" data-value="/">÷</button>
+        <div class="keys" role="group" aria-label="Teclado de calculadora">
+          <button class="key key-fn" data-action="clear">AC</button>
+          <button class="key key-fn" data-action="delete">DEL</button>
+          <button class="key key-fn" data-action="percent">%</button>
+          <button class="key key-op" data-action="operator" data-value="/">÷</button>
 
-        <button class="key" data-action="number" data-value="7">7</button>
-        <button class="key" data-action="number" data-value="8">8</button>
-        <button class="key" data-action="number" data-value="9">9</button>
-        <button class="key key-op" data-action="operator" data-value="*">×</button>
+          <button class="key" data-action="number" data-value="7">7</button>
+          <button class="key" data-action="number" data-value="8">8</button>
+          <button class="key" data-action="number" data-value="9">9</button>
+          <button class="key key-op" data-action="operator" data-value="*">×</button>
 
-        <button class="key" data-action="number" data-value="4">4</button>
-        <button class="key" data-action="number" data-value="5">5</button>
-        <button class="key" data-action="number" data-value="6">6</button>
-        <button class="key key-op" data-action="operator" data-value="-">−</button>
+          <button class="key" data-action="number" data-value="4">4</button>
+          <button class="key" data-action="number" data-value="5">5</button>
+          <button class="key" data-action="number" data-value="6">6</button>
+          <button class="key key-op" data-action="operator" data-value="-">−</button>
 
-        <button class="key" data-action="number" data-value="1">1</button>
-        <button class="key" data-action="number" data-value="2">2</button>
-        <button class="key" data-action="number" data-value="3">3</button>
-        <button class="key key-op" data-action="operator" data-value="+">+</button>
+          <button class="key" data-action="number" data-value="1">1</button>
+          <button class="key" data-action="number" data-value="2">2</button>
+          <button class="key" data-action="number" data-value="3">3</button>
+          <button class="key key-op" data-action="operator" data-value="+">+</button>
 
-        <button class="key key-fn" data-action="toggle-sign">±</button>
-        <button class="key" data-action="number" data-value="0">0</button>
-        <button class="key" data-action="decimal">.</button>
-        <button class="key key-eq" data-action="equals">=</button>
-      </div>
+          <button class="key key-fn" data-action="toggle-sign">±</button>
+          <button class="key" data-action="number" data-value="0">0</button>
+          <button class="key" data-action="decimal">.</button>
+          <button class="key key-eq" data-action="equals">=</button>
+        </div>
+      </article>
+
+      <aside class="history-panel" aria-label="Historial de cálculos">
+        <div class="history-header">
+          <h2>Historial</h2>
+          <button class="clear-history" type="button" id="clearHistoryBtn">Limpiar</button>
+        </div>
+        <ul id="historyList" class="history-list">
+          <li class="history-empty">Aún no hay operaciones</li>
+        </ul>
+      </aside>
     </section>
   </main>
 
